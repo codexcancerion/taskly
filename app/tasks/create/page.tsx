@@ -1,23 +1,12 @@
 "use client"
 
 import Navbar from "@/components/navbar";
-import { createTask, getTaskById } from "@/features/task_management/actions";
+import { createTask } from "@/features/task_management/actions";
 import { Task } from "@/features/task_management/types";
-import { useParams, useRouter } from "next/navigation"
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"
 
 export default function Page() {
-    const id = useParams().id as string;
     const router = useRouter()
-    const [task, setTask] = useState<Task>();
-
-    useEffect(() => {
-        const fetchTask = async () => {
-            const fetchedTask = await getTaskById(id);
-            if (fetchedTask) setTask(fetchedTask);
-        }
-        fetchTask();
-    }, [id]);
 
     const handleCreateTask = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -46,15 +35,19 @@ export default function Page() {
         <div className="">
             <Navbar />
 
-            <div className="p-20 flex flex-col gap-6 items-center">
-                <h1 className="font-extrabold text-4xl">Create New Task.</h1>
+            <div className="md:p-20 p-10 flex flex-col gap-6 items-center justify-center">
+                <div className="py-10 md:py-4 flex gap-4 flex-col items-center">
+                    <h1 className="font-extrabold text-4xl text-center">Create New Task.</h1>
+                    <button onClick={() => router.back()} className="py-1 px-2 bg-slate-500 rounded-lg text-white">
+                        Back
+                    </button>
+                </div>
 
                 <form onSubmit={handleCreateTask} className="flex flex-col items-center max-w-md min-w-xs w-full">
                     <input
                         type="text"
                         placeholder="Title"
                         className="border p-2 rounded-lg w-full mb-4"
-                        defaultValue={task?.title}
                         name="title"
                         required
                     />
@@ -62,7 +55,6 @@ export default function Page() {
                     <textarea
                         placeholder="Description"
                         className="border p-2 rounded-lg w-full mb-4"
-                        defaultValue={task?.description}
                         name="description"
                         required
                     ></textarea>
@@ -70,14 +62,10 @@ export default function Page() {
                     <input
                         type="date"
                         className="border p-2 rounded-lg w-full mb-4"
-                        defaultValue={task?.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''}
                         name="dueDate"
                     />
 
                     <div className="space-x-2">
-                        <button onClick={() => router.back()} className="py-1 px-2 bg-slate-500 rounded-lg text-white">
-                            Back
-                        </button>
 
                         <button
                             type="submit"

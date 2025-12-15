@@ -20,8 +20,9 @@ export default function Page() {
     }, [id]);
 
 
-    const handleUpdateTask = async(e: React.FormEvent) => {
+    const handleUpdateTask = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!task) return;
 
         const form = e.target as HTMLFormElement;
         const formData = new FormData(form);
@@ -35,15 +36,24 @@ export default function Page() {
             dueDate: dueDate ? new Date(dueDate).toISOString() : undefined,
         };
 
-        await updateTask(id, updatedTask);
+        await updateTask(task.id, updatedTask);
+        router.push("/tasks");
     }
 
     return (
         <div className="">
             <Navbar />
 
-            <div className="p-20 flex flex-col gap-6 items-center">
-                <h1 className="font-extrabold text-4xl">{task?.title}.</h1>
+            <div className="md:p-20 p-10 flex flex-col gap-6 items-center justify-center">
+                <div className="py-10 md:py-4 flex gap-4 flex-col items-center">
+                    <h1 className="font-extrabold text-4xl text-center">{task?.title}.</h1>
+                    {task?.dateCreated &&
+                        <p className="text-slate-600">Created on {new Date(task?.dateCreated).toLocaleDateString()} at {new Date(task?.dateCreated).toLocaleTimeString()}</p>
+                    }
+                    <button onClick={() => router.back()} className="py-1 px-2 bg-slate-500 rounded-lg text-white">
+                        Back
+                    </button>
+                </div>
 
                 <form onSubmit={handleUpdateTask} className="flex flex-col items-center max-w-md min-w-xs w-full">
                     <input
@@ -71,9 +81,6 @@ export default function Page() {
                     />
 
                     <div className="space-x-2">
-                        <button onClick={() => router.back()} className="py-1 px-2 bg-slate-500 rounded-lg text-white">
-                            Back
-                        </button>
 
                         <button
                             type="submit"

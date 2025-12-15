@@ -17,8 +17,7 @@ export default function TaskCard({ task }: TaskCardProps) {
         };
 
         await updateTask(task.id, updatedTask);
-
-        alert(`Task "${task.title}" marked as complete!`);
+        router.refresh();
     }
 
     const handleUpdate = () => {
@@ -27,12 +26,11 @@ export default function TaskCard({ task }: TaskCardProps) {
 
     const handleDelete = async () => {
         await deleteTask(task.id);
-
-        alert(`Task "${task.title}" to delete!`);
+        router.refresh();
     }
 
     return (
-        <div className="bg-slate-100 p-4 w-sm rounded-xl flex flex-col justify-between gap-4">
+        <div className="bg-slate-100 p-4 w-full max-w-md rounded-xl flex flex-col justify-between gap-4">
             <div>
                 <h2 className="text-xl font-semibold text-slate-800">{task.title}</h2>
 
