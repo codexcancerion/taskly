@@ -1,11 +1,21 @@
-
+"use client"
 
 import Navbar from "@/components/navbar"
 import { getAllTasks } from "@/features/task_management/actions"
 import TaskCard from "@/features/task_management/components/task_card"
+import { Task } from "@/features/task_management/types"
+import { useEffect, useState } from "react"
 
 export default async function Page() {
-    const tasks = await getAllTasks()
+    const [tasks, setTasks] = useState<Task[]>([])
+
+    useEffect(() => {
+        async function fetchTasks() {
+            const allTasks = await getAllTasks()
+            setTasks(allTasks)
+        }
+        fetchTasks()
+    }, [])
 
     return (
         <div className="">
