@@ -1,11 +1,21 @@
+"use client"
 
-
+import { useEffect, useState } from "react"
 import Navbar from "@/components/navbar"
-import { getAllTasks } from "@/features/task_management/actions"
 import TaskCard from "@/features/task_management/components/task_card"
+import { Task } from "@/features/task_management/types"
+import { getAllTasks } from "@/features/task_management/actions"
 
-export default async function Page() {
-    const tasks = await getAllTasks()
+export default function Page() {
+    const [tasks, setTasks] = useState<Task[]>([])
+
+    useEffect(() => {
+        const fetchTasks = async () => {
+            const data = await getAllTasks()
+            setTasks(data)
+        }
+        fetchTasks()
+    }, [])
 
     return (
         <div className="">
@@ -19,13 +29,12 @@ export default async function Page() {
                     </a>
                 </div>
 
-                <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 w-full">
-                    {tasks.map((task) => {
-                        return (
-                            <TaskCard key={task.id} task={task} />
-                        )
-                    })}
+                {<div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 w-full">
+                    {tasks.map((task) => (
+                        <TaskCard key={task.id} task={task} />
+                    ))}
                 </div>
+                }
             </div>
         </div>
     )
