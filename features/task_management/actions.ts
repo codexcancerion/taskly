@@ -1,7 +1,6 @@
 "use server"
 
 import { addDocument, deleteDocument, getAllDocuments, getDocumentById, updateDocument } from "@/services/firebase/utils";
-import { tasks } from "./data";
 import { Task } from "./types";
 import { TASKS_COLLECTION } from "@/services/firebase/config";
 
