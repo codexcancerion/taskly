@@ -1,6 +1,7 @@
 
 
 import Navbar from "@/components/navbar"
+import ChatSection from "@/features/chat/components/chat_section"
 import { getAllTasks } from "@/features/task_management/actions"
 import TaskCard from "@/features/task_management/components/task_card"
 
@@ -27,6 +28,8 @@ export default async function Page() {
                     })}
                 </div>
             </div>
+
+            {/* <ChatSection /> */}
         </div>
     )
 }
