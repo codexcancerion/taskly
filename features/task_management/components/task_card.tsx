@@ -17,7 +17,9 @@ export default function TaskCard({ task }: TaskCardProps) {
         };
 
         await updateTask(task.id, updatedTask);
-        router.refresh();
+        if (typeof window !== "undefined") {
+            window.location.reload();
+        }
     }
 
     const handleUpdate = () => {
@@ -26,7 +28,10 @@ export default function TaskCard({ task }: TaskCardProps) {
 
     const handleDelete = async () => {
         await deleteTask(task.id);
-        router.refresh();
+        console.log("Deleted task with ID:", task.id);
+        if (typeof window !== "undefined") {
+            window.location.reload();
+        }
     }
 
     return (
